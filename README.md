@@ -1,3 +1,7 @@
+# Iterative deepening Alphabeta pruning bot
+
+A Lichess bot which uses Alpha beta pruning algorithm with iterative deepening. Online at [lichess.org/@/Janzari92](https://lichess.org/@/Janzari92)
+
 # lichess-bot
 [![Python Build](https://github.com/lichess-bot-devs/lichess-bot/actions/workflows/python-build.yml/badge.svg)](https://github.com/lichess-bot-devs/lichess-bot/actions/workflows/python-build.yml)
 [![Python Test](https://github.com/lichess-bot-devs/lichess-bot/actions/workflows/python-test.yml/badge.svg)](https://github.com/lichess-bot-devs/lichess-bot/actions/workflows/python-test.yml)
