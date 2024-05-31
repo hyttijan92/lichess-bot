@@ -10,9 +10,11 @@ from chess.engine import PlayResult, Limit
 import random
 from functools import partial
 
+import chess.engine
 from lib.engine_wrapper import MinimalEngine
 from lib.types import MOVE, HOMEMADE_ARGS_TYPE
 import logging
+import threading
 
 
 # Use this logger variable to print messages to the console or log files.
@@ -27,74 +29,6 @@ class ExampleEngine(MinimalEngine):
     pass
 
 
-# Bot names and ideas from tom7's excellent eloWorld video
-
-class RandomMove(ExampleEngine):
-    """Get a random move."""
-
-    def search(self, board: chess.Board, *args: HOMEMADE_ARGS_TYPE) -> PlayResult:
-        """Choose a random move."""
-        return PlayResult(random.choice(list(board.legal_moves)), None)
-
-
-class Alphabetical(ExampleEngine):
-    """Get the first move when sorted by san representation."""
-
-    def search(self, board: chess.Board, *args: HOMEMADE_ARGS_TYPE) -> PlayResult:
-        """Choose the first move alphabetically."""
-        moves = list(board.legal_moves)
-        moves.sort(key=board.san)
-        return PlayResult(moves[0], None)
-
-
-class FirstMove(ExampleEngine):
-    """Get the first move when sorted by uci representation."""
-
-    def search(self, board: chess.Board, *args: HOMEMADE_ARGS_TYPE) -> PlayResult:
-        """Choose the first move alphabetically in uci representation."""
-        moves = list(board.legal_moves)
-        moves.sort(key=str)
-        return PlayResult(moves[0], None)
-
-
-class ComboEngine(ExampleEngine):
-    """
-    Get a move using multiple different methods.
-
-    This engine demonstrates how one can use `time_limit`, `draw_offered`, and `root_moves`.
-    """
-
-    def search(self, board: chess.Board, time_limit: Limit, ponder: bool, draw_offered: bool, root_moves: MOVE) -> PlayResult:
-        """
-        Choose a move using multiple different methods.
-
-        :param board: The current position.
-        :param time_limit: Conditions for how long the engine can search (e.g. we have 10 seconds and search up to depth 10).
-        :param ponder: Whether the engine can ponder after playing a move.
-        :param draw_offered: Whether the bot was offered a draw.
-        :param root_moves: If it is a list, the engine should only play a move that is in `root_moves`.
-        :return: The move to play.
-        """
-        if isinstance(time_limit.time, int):
-            my_time = time_limit.time
-            my_inc = 0
-        elif board.turn == chess.WHITE:
-            my_time = time_limit.white_clock if isinstance(time_limit.white_clock, int) else 0
-            my_inc = time_limit.white_inc if isinstance(time_limit.white_inc, int) else 0
-        else:
-            my_time = time_limit.black_clock if isinstance(time_limit.black_clock, int) else 0
-            my_inc = time_limit.black_inc if isinstance(time_limit.black_inc, int) else 0
-
-        possible_moves = root_moves if isinstance(root_moves, list) else list(board.legal_moves)
-
-        if my_time / 60 + my_inc > 10:
-            # Choose a random move.
-            move = random.choice(possible_moves)
-        else:
-            # Choose the first move alphabetically in uci representation.
-            possible_moves.sort(key=str)
-            move = possible_moves[0]
-        return PlayResult(move, None, draw_offered=draw_offered)
 CHESS_PIECE_VALUES = {
     chess.PAWN: 100,
     chess.KNIGHT: 300,
@@ -142,17 +76,63 @@ ROOK_PIECE_SQUARE_TABLES_BLACK = [0,  0,  0,  0,  0,  0,  0,  0,
                                   0,  0,  0,  5,  5,  0,  0,  0]
 ROOK_PIECE_SQUARE_TABLES_WHITE = ROOK_PIECE_SQUARE_TABLES_BLACK[::-1]
 
-class AlphaBeta(MinimalEngine):
 
+
+class IterativeDeepening(ExampleEngine):
+
+    def timeout_occured(self):
+        logger.debug("Timeout occured.")
+        self.timeout = True
     
-    def search(self, board: chess.Board, time_limit: chess.engine.Limit, ponder: bool, draw_offered: bool,
+    def computation_time(self, board: chess.Board, time_limit: Limit):
+        if board.turn == chess.WHITE and time_limit.white_inc is not None:
+            if time_limit.white_inc == 0:
+                if time_limit.white_clock > time_limit.black_clock:
+                    return min(time_limit.white_clock-time_limit.black_clock, 10.0)
+                else:
+                    return 1.0
+            else:
+                return min(time_limit.white_inc, 15.0)
+        elif board.turn == chess.BLACK and time_limit.black_inc is not None:
+            if time_limit.black_inc == 0:
+                if time_limit.black_clock > time_limit.white_clock:
+                    return min(time_limit.black_clock-time_limit.white_clock, 10.0)
+                else:
+                    return 1.0
+            else:
+                return min(time_limit.black_inc, 15.0)
+        else:
+            return 10.0
+
+    def search(self, board: chess.Board, time_limit: Limit, ponder: bool, draw_offered: bool,
                root_moves: MOVE) -> PlayResult:
-        
+        self.timeout = False
+        MAX_DEPTH = 100
+        move = None
+        try:
+            seconds_to_compute = self.computation_time(board, time_limit)
+            logger.debug("Calculating next move for {} seconds".format(seconds_to_compute))
+            timer = threading.Timer(seconds_to_compute, self.timeout_occured)
+            timer.start()
+            for i in range(2, MAX_DEPTH):
+                logger.debug("Currently analyzing depth:{}".format(i))
+                move = self.decide(board, i)
+            timer.cancel()
+            return move
+        except TimeoutError:
+            if move is None:
+                logger.debug("Choosing a random move")
+                return list(board.legal_moves)[0]
+            else:
+                return move
+
+    def decide(self, board: chess.Board, depth: int):
         alpha = -99999999
         beta = 99999999
         legal_moves = list(board.legal_moves)
         sort_initial_moves_partial = partial(self.sort_initial_moves, board)
         random.shuffle(legal_moves)
+     
         if board.turn == chess.WHITE:
             max_value = -99999999
             max_move = None
@@ -160,7 +140,7 @@ class AlphaBeta(MinimalEngine):
             for move in legal_moves:
                 board.push(move)
                 value = self.alphabeta(
-                    board, 3, alpha, beta, False)
+                    board, depth, alpha, beta, False)
                 if value > max_value or max_move == None:
                     max_value = value
                     max_move = move
@@ -168,7 +148,7 @@ class AlphaBeta(MinimalEngine):
                 if max_value > beta:
                     break
                 alpha = max(alpha, max_value)
-            return PlayResult(max_move, None) 
+            return PlayResult(max_move, None)
         else:
             min_value = 99999999
             min_move = None
@@ -176,7 +156,7 @@ class AlphaBeta(MinimalEngine):
             for move in legal_moves:
                 board.push(move)
                 value = self.alphabeta(
-                    board, 3, alpha, beta, True)
+                    board, depth, alpha, beta, True)
                 if value < min_value or min_move == None:
                     min_value = value
                     min_move = move
@@ -184,9 +164,12 @@ class AlphaBeta(MinimalEngine):
                 if min_value < alpha:
                     break
                 beta = min(beta, min_value)
-            return PlayResult(min_move, None)                
+            return PlayResult(min_move, None)
+                     
     def alphabeta(self, board: chess.Board, depth: int, alpha: int, beta: int, is_player_maximizing: bool) -> int:
-        if depth == 0 or board.is_game_over():
+        if self.timeout:
+            raise TimeoutError
+        elif depth == 0 or board.is_game_over():
             if is_player_maximizing:
                 return self.heuristic(board)-depth
             else:
@@ -256,3 +239,4 @@ class AlphaBeta(MinimalEngine):
                         black_score += ROOK_PIECE_SQUARE_TABLES_BLACK[square]
 
         return white_score-black_score
+
