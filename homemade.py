@@ -76,6 +76,18 @@ ROOK_PIECE_SQUARE_TABLES_BLACK = [0,  0,  0,  0,  0,  0,  0,  0,
                                   0,  0,  0,  5,  5,  0,  0,  0]
 ROOK_PIECE_SQUARE_TABLES_WHITE = ROOK_PIECE_SQUARE_TABLES_BLACK[::-1]
 
+QUEEN_PIECE_SQUARE_TABLES_BLACK = [-20, -10, -10, -5, -5, -10, -10, -20,
+                                   -10,  0,  0,  0,  0,  0,  0, -10,
+                                   -10,  0,  5,  5,  5,  5,  0, -10,
+                                   -5,  0,  5,  5,  5,  5,  0, -5,
+                                   0,  0,  5,  5,  5,  5,  0, -5,
+                                   -10,  5,  5,  5,  5,  5,  0, -10,
+                                   -10,  0,  5,  0,  0,  0,  0, -10,
+                                   -20, -10, -10, -5, -5, -10, -10, -20]
+
+QUEEN_PIECE_SQUARE_TABLES_WHITE = QUEEN_PIECE_SQUARE_TABLES_BLACK[::-1]
+
+
 
 
 class IterativeDeepening(ExampleEngine):
@@ -83,7 +95,7 @@ class IterativeDeepening(ExampleEngine):
     def timeout_occured(self):
         logger.debug("Timeout occured.")
         self.timeout = True
-    
+
     def computation_time(self, board: chess.Board, time_limit: Limit):
         if board.turn == chess.WHITE and time_limit.white_inc is not None:
             if time_limit.white_inc == 0:
@@ -105,7 +117,7 @@ class IterativeDeepening(ExampleEngine):
                     return 1.0
             else:
                 if time_limit.black_clock > time_limit.white_clock:
-                    return (time_limit.black_clock-time_limit.white_clock)/4 +time_limit.black_inc
+                    return (time_limit.black_clock-time_limit.white_clock)/4 + time_limit.black_inc
                 else:
                     return time_limit.black_inc
         else:
@@ -113,13 +125,14 @@ class IterativeDeepening(ExampleEngine):
 
     def search(self, board: chess.Board, time_limit: Limit, ponder: bool, draw_offered: bool,
                root_moves: MOVE) -> PlayResult:
-        self.timeout = False     
+        self.timeout = False
         MAX_DEPTH = 100
         self.move = None
         original_board = copy.deepcopy(board)
         try:
             seconds_to_compute = self.computation_time(board, time_limit)
-            logger.debug("Calculating next move for {} seconds".format(seconds_to_compute))
+            logger.debug("Calculating next move for {} seconds".format(
+                seconds_to_compute))
             timer = threading.Timer(seconds_to_compute, self.timeout_occured)
             timer.start()
             for i in range(1, MAX_DEPTH):
@@ -143,7 +156,7 @@ class IterativeDeepening(ExampleEngine):
         legal_moves = list(board.legal_moves)
         sort_initial_moves_partial = partial(self.sort_initial_moves, board)
         random.shuffle(legal_moves)
-     
+
         if board.turn == chess.WHITE:
             max_value = -99999999
             max_move = None
@@ -182,7 +195,7 @@ class IterativeDeepening(ExampleEngine):
                     break
                 beta = min(beta, min_value)
             return PlayResult(min_move, None)
-                     
+
     def alphabeta(self, board: chess.Board, depth: int, alpha: int, beta: int, is_player_maximizing: bool) -> int:
         if self.timeout:
             raise TimeoutError
@@ -214,7 +227,6 @@ class IterativeDeepening(ExampleEngine):
                 beta = min(beta, min_value)
             return min_value
 
-
     def sort_initial_moves(self, board: chess.Board, move: chess.Move) -> int:
         board.push(move)
         result = self.heuristic(board)
@@ -224,7 +236,9 @@ class IterativeDeepening(ExampleEngine):
     def heuristic(self, board: chess.Board) -> int:
         white_score = 0
         black_score = 0
-        self.counter+=1
+        self.counter += 1
+
+
         if board.is_checkmate():
             if board.outcome().winner == chess.WHITE:
                 return 9999999
@@ -245,6 +259,8 @@ class IterativeDeepening(ExampleEngine):
                         white_score += BISHOP_PIECE_SQUARE_TABLES_WHITE[square]
                     elif (piece.piece_type == chess.ROOK):
                         white_score += ROOK_PIECE_SQUARE_TABLES_WHITE[square]
+                    elif (piece.piece_type == chess.QUEEN):
+                        white_score += QUEEN_PIECE_SQUARE_TABLES_WHITE[square]
                 else:
                     black_score += CHESS_PIECE_VALUES[piece.piece_type]
                     if (piece.piece_type == chess.PAWN):
@@ -255,6 +271,8 @@ class IterativeDeepening(ExampleEngine):
                         black_score += BISHOP_PIECE_SQUARE_TABLES_BLACK[square]
                     elif (piece.piece_type == chess.ROOK):
                         black_score += ROOK_PIECE_SQUARE_TABLES_BLACK[square]
+                    elif (piece.piece_type == chess.QUEEN):
+                        black_score += QUEEN_PIECE_SQUARE_TABLES_BLACK[square]
+                    
 
         return white_score-black_score
-
