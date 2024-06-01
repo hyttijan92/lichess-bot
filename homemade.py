@@ -9,7 +9,7 @@ import chess
 from chess.engine import PlayResult, Limit
 import random
 from functools import partial
-
+import copy
 import chess.engine
 from lib.engine_wrapper import MinimalEngine
 from lib.types import MOVE, HOMEMADE_ARGS_TYPE
@@ -109,12 +109,13 @@ class IterativeDeepening(ExampleEngine):
         self.timeout = False
         MAX_DEPTH = 100
         move = None
+        original_board = copy.deepcopy(board)
         try:
             seconds_to_compute = self.computation_time(board, time_limit)
             logger.debug("Calculating next move for {} seconds".format(seconds_to_compute))
             timer = threading.Timer(seconds_to_compute, self.timeout_occured)
             timer.start()
-            for i in range(2, MAX_DEPTH):
+            for i in range(1, MAX_DEPTH):
                 logger.debug("Currently analyzing depth:{}".format(i))
                 move = self.decide(board, i)
             timer.cancel()
@@ -122,7 +123,7 @@ class IterativeDeepening(ExampleEngine):
         except TimeoutError:
             if move is None:
                 logger.debug("Choosing a random move")
-                return list(board.legal_moves)[0]
+                return PlayResult(list(original_board.legal_moves)[0], None)
             else:
                 return move
 
