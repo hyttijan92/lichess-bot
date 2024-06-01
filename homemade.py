@@ -29,43 +29,81 @@ class ExampleEngine(MinimalEngine):
     pass
 
 
-CHESS_PIECE_VALUES = {
-    chess.PAWN: 100,
-    chess.KNIGHT: 320,
-    chess.BISHOP: 330,
-    chess.ROOK: 500,
-    chess.QUEEN: 900,
+MID_GAME_CHESS_PIECE_VALUES = {
+    chess.PAWN: 82,
+    chess.KNIGHT: 337,
+    chess.BISHOP: 365,
+    chess.ROOK: 477,
+    chess.QUEEN: 1025,
     chess.KING: 99999
 }
+END_GAME_CHESS_PIECE_VALUES = {
+    chess.PAWN: 94,
+    chess.KNIGHT: 281,
+    chess.BISHOP: 297,
+    chess.ROOK: 512,
+    chess.QUEEN: 936,
+    chess.KING: 99999
+}
+MID_GAME_PAWN_PIECE_SQUARE_TABLES_BLACK = [0, 0, 0, 0, 0, 0, 0, 0,
+                                           98, 134,  61,  95,  68, 126, 34, -11,
+                                           -6,   7,  26,  31,  65,  56, 25, -20,
+                                           -14,  13,   6,  21,  23,  12, 17, -23,
+                                           -27,  -2,  -5,  12,  17,   6, 10, -25,
+                                           -26,  -4,  -4, -10,   3,   3, 33, -12,
+                                           -35,  -1, -20, -23, -15,  24, 38, -22,
+                                           0,   0,   0,   0,   0,   0,  0,   0]
 
-PAWN_PIECE_SQUARE_TABLES_BLACK = [0,  0,  0,  0,  0,  0,  0,  0,
-                                  50, 50, 50, 50, 50, 50, 50, 50,
-                                  10, 10, 20, 30, 30, 20, 10, 10,
-                                  5,  5, 10, 25, 25, 10,  5,  5,
-                                  0,  0,  0, 20, 20,  0,  0,  0,
-                                  5, -5, -10,  0,  0, -10, -5,  5,
-                                  5, 10, 10, -20, -20, 10, 10,  5,
-                                  0,  0,  0,  0,  0,  0,  0,  0]
-PAWN_PIECE_SQUARE_TABLES_WHITE = PAWN_PIECE_SQUARE_TABLES_BLACK[::-1]
-KNIGHT_PIECE_SQUARE_TABLES_BLACK = [-50, -40, -30, -30, -30, -30, -40, -50,
-                                    -40, -20,  0,  0,  0,  0, -20, -40,
-                                    -30,  0, 10, 15, 15, 10,  0, -30,
-                                    -30,  5, 15, 20, 20, 15,  5, -30,
-                                    -30,  0, 15, 20, 20, 15,  0, -30,
-                                    -30,  5, 10, 15, 15, 10,  5, -30,
-                                    -40, -20,  0,  5,  5,  0, -20, -40,
-                                    -50, -40, -30, -30, -30, -30, -40, -50]
-KNIGHT_PIECE_SQUARE_TABLES_WHITE = KNIGHT_PIECE_SQUARE_TABLES_BLACK[::-1]
-BISHOP_PIECE_SQUARE_TABLES_BLACK = [-20, -10, -10, -10, -10, -10, -10, -20,
-                                    -10,  0,  0,  0,  0,  0,  0, -10,
-                                    -10,  0,  5, 10, 10,  5,  0, -10,
-                                    -10,  5,  5, 10, 10,  5,  5, -10,
-                                    -10,  0, 10, 10, 10, 10,  0, -10,
-                                    -10, 10, 10, 10, 10, 10, 10, -10,
-                                    -10,  5,  0,  0,  0,  0,  5, -10,
-                                    -20, -10, -10, -10, -10, -10, -10, -20]
+MID_GAME_PAWN_PIECE_SQUARE_TABLES_WHITE = MID_GAME_PAWN_PIECE_SQUARE_TABLES_BLACK[::-1]
+END_GAME_PAWN_PIECE_SQUARE_TABLES_BLACK = [0,   0,   0,   0,   0,   0,   0,   0,
+                                           178, 173, 158, 134, 147, 132, 165, 187,
+                                           94, 100,  85,  67,  56,  53,  82,  84,
+                                           32,  24,  13,   5,  -2,   4,  17,  17,
+                                           13,   9,  -3,  -7,  -7,  -8,   3,  -1,
+                                           4,   7,  -6,   1,   0,  -5,  -1,  -8,
+                                           13,   8,   8,  10,  13,   0,   2,  -7,
+                                           0,   0,   0,   0,   0,   0,   0,   0]
+END_GAME_PAWN_PIECE_SQUARE_TABLES_WHITE = END_GAME_PAWN_PIECE_SQUARE_TABLES_BLACK[::-1]
+MID_GAME_KNIGHT_PIECE_SQUARE_TABLES_BLACK = [-167, -89, -34, -49,  61, -97, -15, -107,
+                                             -73, -41,  72,  36,  23,  62,   7,  -17,
+                                             -47,  60,  37,  65,  84, 129,  73,   44,
+                                             -9,  17,  19,  53,  37,  69,  18,   22,
+                                             -13,   4,  16,  13,  28,  19,  21,   -8,
+                                             -23,  -9,  12,  10,  19,  17,  25,  -16,
+                                             -29, -53, -12,  -3,  -1,  18, -14,  -19,
+                                             -105, -21, -58, -33, -17, -28, -19,  -23]
+MID_GAME_KNIGHT_PIECE_SQUARE_TABLES_WHITE = MID_GAME_KNIGHT_PIECE_SQUARE_TABLES_BLACK[::-1]
+END_GAME_KNIGHT_PIECE_SQUARE_TABLES_BLACK = [-58, -38, -13, -28, -31, -27, -63, -99,
+                                             -25,  -8, -25,  -2,  -9, -25, -24, -52,
+                                             -24, -20,  10,   9,  -1,  -9, -19, -41,
+                                             -17,   3,  22,  22,  22,  11,   8, -18,
+                                             -18,  -6,  16,  25,  16,  17,   4, -18,
+                                             -23,  -3,  -1,  15,  10,  -3, -20, -22,
+                                             -42, -20, -10,  -5,  -2, -20, -23, -44,
+                                             -29, -51, -23, -15, -22, -18, -50, -64]
+END_GAME_KNIGHT_PIECE_SQUARE_TABLES_WHITE = END_GAME_KNIGHT_PIECE_SQUARE_TABLES_BLACK[::-1]
 
-BISHOP_PIECE_SQUARE_TABLES_WHITE = BISHOP_PIECE_SQUARE_TABLES_BLACK[::-1]
+MID_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK = [-29,   4, -82, -37, -25, -42,   7,  -8,
+                                             -26,  16, -18, -13,  30,  59,  18, -47,
+                                             -16,  37,  43,  40,  35,  50,  37,  -2,
+                                             -4,   5,  19,  50,  37,  37,   7,  -2,
+                                             -6,  13,  13,  26,  34,  12,  10,   4,
+                                             0,  15,  15,  15,  14,  27,  18,  10,
+                                             4,  15,  16,   0,   7,  21,  33,   1,
+                                             -33,  -3, -14, -21, -13, -12, -39, -21]
+MID_GAME_BISHOP_PIECE_SQUARE_TABLES_WHITE = MID_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK[::-1]
+
+END_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK = [    -14, -21, -11,  -8, -7,  -9, -17, -24,
+     -8,  -4,   7, -12, -3, -13,  -4, -14,
+      2,  -8,   0,  -1, -2,   6,   0,   4,
+     -3,   9,  12,   9, 14,  10,   3,   2,
+     -6,   3,  13,  19,  7,  10,  -3,  -9,
+    -12,  -3,   8,  10, 13,   3,  -7, -15,
+    -14, -18,  -7,  -1,  4,  -9, -15, -27,
+    -23,  -9, -23,  -5, -9, -16,  -5, -17]
+
+END_GAME_BISHOP_PIECE_SQUARE_TABLES_WHITE = END_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK[::-1]
+
 ROOK_PIECE_SQUARE_TABLES_BLACK = [0,  0,  0,  0,  0,  0,  0,  0,
                                   5, 10, 10, 10, 10, 10, 10,  5,
                                   -5,  0,  0,  0,  0,  0,  0, -5,
@@ -77,13 +115,12 @@ ROOK_PIECE_SQUARE_TABLES_BLACK = [0,  0,  0,  0,  0,  0,  0,  0,
 ROOK_PIECE_SQUARE_TABLES_WHITE = ROOK_PIECE_SQUARE_TABLES_BLACK[::-1]
 
 
-
 class IterativeDeepening(ExampleEngine):
 
     def timeout_occured(self):
         logger.debug("Timeout occured.")
         self.timeout = True
-    
+
     def computation_time(self, board: chess.Board, time_limit: Limit):
         if board.turn == chess.WHITE and time_limit.white_inc is not None:
             if time_limit.white_inc == 0:
@@ -105,7 +142,7 @@ class IterativeDeepening(ExampleEngine):
                     return 1.0
             else:
                 if time_limit.black_clock > time_limit.white_clock:
-                    return (time_limit.black_clock-time_limit.white_clock)/4 +time_limit.black_inc
+                    return (time_limit.black_clock-time_limit.white_clock)/4 + time_limit.black_inc
                 else:
                     return time_limit.black_inc
         else:
@@ -113,13 +150,14 @@ class IterativeDeepening(ExampleEngine):
 
     def search(self, board: chess.Board, time_limit: Limit, ponder: bool, draw_offered: bool,
                root_moves: MOVE) -> PlayResult:
-        self.timeout = False     
+        self.timeout = False
         MAX_DEPTH = 100
         self.move = None
         original_board = copy.deepcopy(board)
         try:
             seconds_to_compute = self.computation_time(board, time_limit)
-            logger.debug("Calculating next move for {} seconds".format(seconds_to_compute))
+            logger.debug("Calculating next move for {} seconds".format(
+                seconds_to_compute))
             timer = threading.Timer(seconds_to_compute, self.timeout_occured)
             timer.start()
             for i in range(1, MAX_DEPTH):
@@ -143,7 +181,7 @@ class IterativeDeepening(ExampleEngine):
         legal_moves = list(board.legal_moves)
         sort_initial_moves_partial = partial(self.sort_initial_moves, board)
         random.shuffle(legal_moves)
-     
+
         if board.turn == chess.WHITE:
             max_value = -99999999
             max_move = None
@@ -182,7 +220,7 @@ class IterativeDeepening(ExampleEngine):
                     break
                 beta = min(beta, min_value)
             return PlayResult(min_move, None)
-                     
+
     def alphabeta(self, board: chess.Board, depth: int, alpha: int, beta: int, is_player_maximizing: bool) -> int:
         if self.timeout:
             raise TimeoutError
@@ -214,7 +252,6 @@ class IterativeDeepening(ExampleEngine):
                 beta = min(beta, min_value)
             return min_value
 
-
     def sort_initial_moves(self, board: chess.Board, move: chess.Move) -> int:
         board.push(move)
         result = self.heuristic(board)
@@ -222,9 +259,38 @@ class IterativeDeepening(ExampleEngine):
         return result
 
     def heuristic(self, board: chess.Board) -> int:
-        white_score = 0
-        black_score = 0
-        self.counter+=1
+        game_phase = 0
+        middle_game_white_score = 0
+        end_game_white_score = 0
+        middle_game_black_score = 0
+        end_game_black_score = 0
+        for square in chess.SQUARES:
+            piece = board.piece_at(square)
+            if piece is not None:
+                if piece.color == chess.WHITE:
+                    middle_game_white_score
+
+                    white_score += CHESS_PIECE_VALUES[piece.piece_type]
+                    if (piece.piece_type == chess.PAWN):
+                        white_score += PAWN_PIECE_SQUARE_TABLES_WHITE[square]
+                    elif (piece.piece_type == chess.KNIGHT):
+                        white_score += KNIGHT_PIECE_SQUARE_TABLES_WHITE[square]
+                    elif (piece.piece_type == chess.BISHOP):
+                        white_score += BISHOP_PIECE_SQUARE_TABLES_WHITE[square]
+                    elif (piece.piece_type == chess.ROOK):
+                        white_score += ROOK_PIECE_SQUARE_TABLES_WHITE[square]
+                else:
+                    black_score += CHESS_PIECE_VALUES[piece.piece_type]
+                    if (piece.piece_type == chess.PAWN):
+                        black_score += PAWN_PIECE_SQUARE_TABLES_BLACK[square]
+                    elif (piece.piece_type == chess.KNIGHT):
+                        black_score += KNIGHT_PIECE_SQUARE_TABLES_BLACK[square]
+                    elif (piece.piece_type == chess.BISHOP):
+                        black_score += BISHOP_PIECE_SQUARE_TABLES_BLACK[square]
+                    elif (piece.piece_type == chess.ROOK):
+                        black_score += ROOK_PIECE_SQUARE_TABLES_BLACK[square]
+
+        self.counter += 1
         if board.is_checkmate():
             if board.outcome().winner == chess.WHITE:
                 return 9999999
@@ -257,4 +323,3 @@ class IterativeDeepening(ExampleEngine):
                         black_score += ROOK_PIECE_SQUARE_TABLES_BLACK[square]
 
         return white_score-black_score
-
