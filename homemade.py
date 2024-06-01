@@ -93,26 +93,73 @@ MID_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK = [-29,   4, -82, -37, -25, -42,   7, 
                                              -33,  -3, -14, -21, -13, -12, -39, -21]
 MID_GAME_BISHOP_PIECE_SQUARE_TABLES_WHITE = MID_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK[::-1]
 
-END_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK = [    -14, -21, -11,  -8, -7,  -9, -17, -24,
-     -8,  -4,   7, -12, -3, -13,  -4, -14,
-      2,  -8,   0,  -1, -2,   6,   0,   4,
-     -3,   9,  12,   9, 14,  10,   3,   2,
-     -6,   3,  13,  19,  7,  10,  -3,  -9,
-    -12,  -3,   8,  10, 13,   3,  -7, -15,
-    -14, -18,  -7,  -1,  4,  -9, -15, -27,
-    -23,  -9, -23,  -5, -9, -16,  -5, -17]
+END_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK = [-14, -21, -11,  -8, -7,  -9, -17, -24,
+                                             -8,  -4,   7, -12, -3, -13,  -4, -14,
+                                             2,  -8,   0,  -1, -2,   6,   0,   4,
+                                             -3,   9,  12,   9, 14,  10,   3,   2,
+                                             -6,   3,  13,  19,  7,  10,  -3,  -9,
+                                             -12,  -3,   8,  10, 13,   3,  -7, -15,
+                                             -14, -18,  -7,  -1,  4,  -9, -15, -27,
+                                             -23,  -9, -23,  -5, -9, -16,  -5, -17]
 
 END_GAME_BISHOP_PIECE_SQUARE_TABLES_WHITE = END_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK[::-1]
 
-ROOK_PIECE_SQUARE_TABLES_BLACK = [0,  0,  0,  0,  0,  0,  0,  0,
-                                  5, 10, 10, 10, 10, 10, 10,  5,
-                                  -5,  0,  0,  0,  0,  0,  0, -5,
-                                  -5,  0,  0,  0,  0,  0,  0, -5,
-                                  -5,  0,  0,  0,  0,  0,  0, -5,
-                                  -5,  0,  0,  0,  0,  0,  0, -5,
-                                  -5,  0,  0,  0,  0,  0,  0, -5,
-                                  0,  0,  0,  5,  5,  0,  0,  0]
-ROOK_PIECE_SQUARE_TABLES_WHITE = ROOK_PIECE_SQUARE_TABLES_BLACK[::-1]
+MID_GAME_ROOK_PIECE_SQUARE_TABLES_BLACK = [32,  42,  32,  51, 63,  9,  31,  43,
+                                           27,  32,  58,  62, 80, 67,  26,  44,
+                                           -5,  19,  26,  36, 17, 45,  61,  16,
+                                           -24, -11,   7,  26, 24, 35,  -8, -20,
+                                           -36, -26, -12,  -1,  9, -7,   6, -23,
+                                           -45, -25, -16, -17,  3,  0,  -5, -33,
+                                           -44, -16, -20,  -9, -1, 11,  -6, -71,
+                                           -19, -13,   1,  17, 16,  7, -37, -26]
+MID_GAME_ROOK_PIECE_SQUARE_TABLES_WHITE = MID_GAME_ROOK_PIECE_SQUARE_TABLES_BLACK[::-1]
+
+END_GAME_ROOK_PIECE_SQUARE_TABLES_BLACK = [13, 10, 18, 15, 12,  12,   8,   5,
+                                           11, 13, 13, 11, -3,   3,   8,   3,
+                                           7,  7,  7,  5,  4,  -3,  -5,  -3,
+                                           4,  3, 13,  1,  2,   1,  -1,   2,
+                                           3,  5,  8,  4, -5,  -6,  -8, -11,
+                                           -4,  0, -5, -1, -7, -12,  -8, -16,
+                                           -6, -6,  0,  2, -9,  -9, -11,  -3,
+                                           -9,  2,  3, -1, -5, -13,   4, -20]
+END_GAME_ROOK_PIECE_SQUARE_TABLES_WHITE = END_GAME_ROOK_PIECE_SQUARE_TABLES_BLACK[::-1]
+
+MID_GAME_QUEEN_PIECE_SQUARE_TABLES_BLACK = [-28,   0,  29,  12,  59,  44,  43,  45,
+                                            -24, -39,  -5,   1, -16,  57,  28,  54,
+                                            -13, -17,   7,   8,  29,  56,  47,  57,
+                                            -27, -27, -16, -16,  -1,  17,  -2,   1,
+                                            -9, -26,  -9, -10,  -2,  -4,   3,  -3,
+                                            -14,   2, -11,  -2,  -5,   2,  14,   5,
+                                            -35,  -8,  11,   2,   8,  15,  -3,   1,
+                                            -1, -18,  -9,  10, -15, -25, -31, -50]
+MID_GAME_QUEEN_PIECE_SQUARE_TABLES_WHITE = MID_GAME_QUEEN_PIECE_SQUARE_TABLES_BLACK[::-1]
+END_GAME_QUEEN_PIECE_SQUARE_TABLES_BLACK = [-9,  22,  22,  27,  27,  19,  10,  20,
+                                            -17,  20,  32,  41,  58,  25,  30,   0,
+                                            -20,   6,   9,  49,  47,  35,  19,   9,
+                                            3,  22,  24,  45,  57,  40,  57,  36,
+                                            -18,  28,  19,  47,  31,  34,  39,  23,
+                                            -16, -27,  15,   6,   9,  17,  10,   5,
+                                            -22, -23, -30, -16, -16, -23, -36, -32,
+                                            -33, -28, -22, -43,  -5, -32, -20, -41]
+END_GAME_QUEEN_PIECE_SQUARE_TABLES_WHITE = END_GAME_QUEEN_PIECE_SQUARE_TABLES_BLACK[::-1]
+MID_GAME_KING_PIECE_SQUARE_TABLES_BLACK = [-65,  23,  16, -15, -56, -34,   2,  13,
+                                           29,  -1, -20,  -7,  -8,  -4, -38, -29,
+                                           -9,  24,   2, -16, -20,   6,  22, -22,
+                                           -17, -20, -12, -27, -30, -25, -14, -36,
+                                           -49,  -1, -27, -39, -46, -44, -33, -51,
+                                           -14, -14, -22, -46, -44, -30, -15, -27,
+                                           1,   7,  -8, -64, -43, -16,   9,   8,
+                                           -15,  36,  12, -54,   8, -28,  24,  14]
+MID_GAME_KING_PIECE_SQUARE_TABLES_WHITE = MID_GAME_KING_PIECE_SQUARE_TABLES_BLACK[::-1]
+END_GAME_KING_PIECE_SQUARE_TABLES_BLACK = [-74, -35, -18, -18, -11,  15,   4, -17,
+                                           -12,  17,  14,  17,  17,  38,  23,  11,
+                                           10,  17,  23,  15,  20,  45,  44,  13,
+                                           -8,  22,  24,  27,  26,  33,  26,   3,
+                                           -18,  -4,  21,  24,  27,  23,   9, -11,
+                                           -19,  -3,  11,  21,  23,  16,   7,  -9,
+                                           -27, -11,   4,  13,  14,   4,  -5, -17,
+                                           -53, -34, -21, -11, -28, -14, -24, -43]
+END_GAME_KING_PIECE_SQUARE_TABLES_WHITE = END_GAME_KING_PIECE_SQUARE_TABLES_BLACK[::-1]
 
 
 class IterativeDeepening(ExampleEngine):
@@ -146,7 +193,7 @@ class IterativeDeepening(ExampleEngine):
                 else:
                     return time_limit.black_inc
         else:
-            return 10.0
+            return 20.0
 
     def search(self, board: chess.Board, time_limit: Limit, ponder: bool, draw_offered: bool,
                root_moves: MOVE) -> PlayResult:
@@ -260,36 +307,11 @@ class IterativeDeepening(ExampleEngine):
 
     def heuristic(self, board: chess.Board) -> int:
         game_phase = 0
+        game_phase_inc = [0, 0, 1, 1, 1, 1, 2, 2, 4, 4, 0, 0]
         middle_game_white_score = 0
         end_game_white_score = 0
         middle_game_black_score = 0
         end_game_black_score = 0
-        for square in chess.SQUARES:
-            piece = board.piece_at(square)
-            if piece is not None:
-                if piece.color == chess.WHITE:
-                    middle_game_white_score
-
-                    white_score += CHESS_PIECE_VALUES[piece.piece_type]
-                    if (piece.piece_type == chess.PAWN):
-                        white_score += PAWN_PIECE_SQUARE_TABLES_WHITE[square]
-                    elif (piece.piece_type == chess.KNIGHT):
-                        white_score += KNIGHT_PIECE_SQUARE_TABLES_WHITE[square]
-                    elif (piece.piece_type == chess.BISHOP):
-                        white_score += BISHOP_PIECE_SQUARE_TABLES_WHITE[square]
-                    elif (piece.piece_type == chess.ROOK):
-                        white_score += ROOK_PIECE_SQUARE_TABLES_WHITE[square]
-                else:
-                    black_score += CHESS_PIECE_VALUES[piece.piece_type]
-                    if (piece.piece_type == chess.PAWN):
-                        black_score += PAWN_PIECE_SQUARE_TABLES_BLACK[square]
-                    elif (piece.piece_type == chess.KNIGHT):
-                        black_score += KNIGHT_PIECE_SQUARE_TABLES_BLACK[square]
-                    elif (piece.piece_type == chess.BISHOP):
-                        black_score += BISHOP_PIECE_SQUARE_TABLES_BLACK[square]
-                    elif (piece.piece_type == chess.ROOK):
-                        black_score += ROOK_PIECE_SQUARE_TABLES_BLACK[square]
-
         self.counter += 1
         if board.is_checkmate():
             if board.outcome().winner == chess.WHITE:
@@ -301,25 +323,53 @@ class IterativeDeepening(ExampleEngine):
         for square in chess.SQUARES:
             piece = board.piece_at(square)
             if piece is not None:
+                game_phase += game_phase_inc[piece.piece_type]
                 if piece.color == chess.WHITE:
-                    white_score += CHESS_PIECE_VALUES[piece.piece_type]
+                    middle_game_white_score += MID_GAME_CHESS_PIECE_VALUES[piece.piece_type]
+                    end_game_white_score += END_GAME_CHESS_PIECE_VALUES[piece.piece_type]
                     if (piece.piece_type == chess.PAWN):
-                        white_score += PAWN_PIECE_SQUARE_TABLES_WHITE[square]
+                        middle_game_white_score += MID_GAME_PAWN_PIECE_SQUARE_TABLES_WHITE[square]
+                        end_game_white_score += END_GAME_PAWN_PIECE_SQUARE_TABLES_WHITE[square]
                     elif (piece.piece_type == chess.KNIGHT):
-                        white_score += KNIGHT_PIECE_SQUARE_TABLES_WHITE[square]
+                        middle_game_white_score += MID_GAME_KNIGHT_PIECE_SQUARE_TABLES_WHITE[square]
+                        end_game_white_score += END_GAME_KNIGHT_PIECE_SQUARE_TABLES_WHITE[square]
                     elif (piece.piece_type == chess.BISHOP):
-                        white_score += BISHOP_PIECE_SQUARE_TABLES_WHITE[square]
+                        middle_game_white_score += MID_GAME_BISHOP_PIECE_SQUARE_TABLES_WHITE[square]
+                        end_game_white_score += END_GAME_BISHOP_PIECE_SQUARE_TABLES_WHITE[square]
                     elif (piece.piece_type == chess.ROOK):
-                        white_score += ROOK_PIECE_SQUARE_TABLES_WHITE[square]
+                        middle_game_white_score += MID_GAME_ROOK_PIECE_SQUARE_TABLES_WHITE[square]
+                        end_game_white_score += END_GAME_ROOK_PIECE_SQUARE_TABLES_WHITE[square]
+                    elif (piece.piece_type == chess.QUEEN):
+                        middle_game_white_score += MID_GAME_QUEEN_PIECE_SQUARE_TABLES_WHITE[square]
+                        end_game_white_score += END_GAME_QUEEN_PIECE_SQUARE_TABLES_WHITE[square]
+                    elif (piece.piece_type == chess.KING):
+                        middle_game_white_score += MID_GAME_KING_PIECE_SQUARE_TABLES_WHITE[square]
+                        end_game_white_score += END_GAME_KING_PIECE_SQUARE_TABLES_WHITE[square]
                 else:
-                    black_score += CHESS_PIECE_VALUES[piece.piece_type]
+                    middle_game_black_score += MID_GAME_CHESS_PIECE_VALUES[piece.piece_type]
+                    end_game_black_score += END_GAME_CHESS_PIECE_VALUES[piece.piece_type]
                     if (piece.piece_type == chess.PAWN):
-                        black_score += PAWN_PIECE_SQUARE_TABLES_BLACK[square]
+                        middle_game_black_score += MID_GAME_PAWN_PIECE_SQUARE_TABLES_BLACK[square]
+                        end_game_black_score += END_GAME_PAWN_PIECE_SQUARE_TABLES_BLACK[square]
                     elif (piece.piece_type == chess.KNIGHT):
-                        black_score += KNIGHT_PIECE_SQUARE_TABLES_BLACK[square]
+                        middle_game_black_score += MID_GAME_KNIGHT_PIECE_SQUARE_TABLES_BLACK[square]
+                        end_game_black_score += END_GAME_KNIGHT_PIECE_SQUARE_TABLES_BLACK[square]
                     elif (piece.piece_type == chess.BISHOP):
-                        black_score += BISHOP_PIECE_SQUARE_TABLES_BLACK[square]
+                        middle_game_black_score += MID_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK[square]
+                        end_game_black_score += END_GAME_BISHOP_PIECE_SQUARE_TABLES_BLACK[square]
                     elif (piece.piece_type == chess.ROOK):
-                        black_score += ROOK_PIECE_SQUARE_TABLES_BLACK[square]
-
-        return white_score-black_score
+                        middle_game_black_score += MID_GAME_ROOK_PIECE_SQUARE_TABLES_BLACK[square]
+                        end_game_black_score += END_GAME_ROOK_PIECE_SQUARE_TABLES_BLACK[square]
+                    elif (piece.piece_type == chess.QUEEN):
+                        middle_game_black_score += MID_GAME_QUEEN_PIECE_SQUARE_TABLES_BLACK[square]
+                        end_game_black_score += END_GAME_QUEEN_PIECE_SQUARE_TABLES_BLACK[square]
+                    elif (piece.piece_type == chess.KING):
+                        middle_game_black_score += MID_GAME_KING_PIECE_SQUARE_TABLES_BLACK[square]
+                        end_game_black_score += END_GAME_KING_PIECE_SQUARE_TABLES_BLACK[square]
+        middle_game_phase = game_phase
+        if middle_game_phase > 24:
+            middle_game_phase = 24
+        end_game_phase = 24-middle_game_phase
+        mid_score = middle_game_white_score-middle_game_black_score
+        end_score = end_game_white_score-end_game_black_score
+        return mid_score*middle_game_phase + end_score * end_game_phase
