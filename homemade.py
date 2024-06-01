@@ -88,19 +88,25 @@ class IterativeDeepening(ExampleEngine):
         if board.turn == chess.WHITE and time_limit.white_inc is not None:
             if time_limit.white_inc == 0:
                 if time_limit.white_clock > time_limit.black_clock:
-                    return min(time_limit.white_clock-time_limit.black_clock, 10.0)
+                    return time_limit.white_clock-time_limit.black_clock
                 else:
                     return 1.0
             else:
-                return min(time_limit.white_inc, 15.0)
+                if time_limit.white_clock > time_limit.black_clock:
+                    return (time_limit.white_clock-time_limit.black_clock)/4+time_limit.white_inc
+                else:
+                    return time_limit.white_inc
         elif board.turn == chess.BLACK and time_limit.black_inc is not None:
             if time_limit.black_inc == 0:
                 if time_limit.black_clock > time_limit.white_clock:
-                    return min(time_limit.black_clock-time_limit.white_clock, 10.0)
+                    return time_limit.black_clock-time_limit.white_clock
                 else:
                     return 1.0
             else:
-                return min(time_limit.black_inc, 15.0)
+                if time_limit.black_clock > time_limit.white_clock:
+                    return (time_limit.black_clock-time_limit.white_clock)/4 +time_limit.black_inc
+                else:
+                    return time_limit.black_inc
         else:
             return 10.0
 
