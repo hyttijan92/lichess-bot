@@ -93,6 +93,7 @@ class IterativeDeepening(ExampleEngine):
                     return 1.0
             else:
                 if time_limit.white_clock > time_limit.black_clock:
+                    logger.debug(time_limit.white_clock-time_limit.black_clock)
                     return (time_limit.white_clock-time_limit.black_clock)/4+time_limit.white_inc
                 else:
                     return time_limit.white_inc
@@ -112,9 +113,9 @@ class IterativeDeepening(ExampleEngine):
 
     def search(self, board: chess.Board, time_limit: Limit, ponder: bool, draw_offered: bool,
                root_moves: MOVE) -> PlayResult:
-        self.timeout = False
+        self.timeout = False     
         MAX_DEPTH = 100
-        move = None
+        self.move = None
         original_board = copy.deepcopy(board)
         try:
             seconds_to_compute = self.computation_time(board, time_limit)
@@ -122,16 +123,19 @@ class IterativeDeepening(ExampleEngine):
             timer = threading.Timer(seconds_to_compute, self.timeout_occured)
             timer.start()
             for i in range(1, MAX_DEPTH):
+                self.counter = 0
                 logger.debug("Currently analyzing depth:{}".format(i))
-                move = self.decide(board, i)
+                self.move = self.decide(board, i)
+                logger.debug("Analyzed {} positions".format(self.counter))
+                self.counter = 0
             timer.cancel()
-            return move
+            return self.move
         except TimeoutError:
-            if move is None:
+            if self.move is None:
                 logger.debug("Choosing a random move")
                 return PlayResult(list(original_board.legal_moves)[0], None)
             else:
-                return move
+                return self.move
 
     def decide(self, board: chess.Board, depth: int):
         alpha = -99999999
@@ -144,6 +148,9 @@ class IterativeDeepening(ExampleEngine):
             max_value = -99999999
             max_move = None
             legal_moves.sort(reverse=False, key=sort_initial_moves_partial)
+            if self.move is not None:
+                legal_moves.remove(self.move.move)
+                legal_moves.insert(0, self.move.move)
             for move in legal_moves:
                 board.push(move)
                 value = self.alphabeta(
@@ -160,6 +167,9 @@ class IterativeDeepening(ExampleEngine):
             min_value = 99999999
             min_move = None
             legal_moves.sort(reverse=False, key=sort_initial_moves_partial)
+            if self.move is not None:
+                legal_moves.remove(self.move.move)
+                legal_moves.insert(0, self.move.move)
             for move in legal_moves:
                 board.push(move)
                 value = self.alphabeta(
@@ -214,6 +224,7 @@ class IterativeDeepening(ExampleEngine):
     def heuristic(self, board: chess.Board) -> int:
         white_score = 0
         black_score = 0
+        self.counter+=1
         if board.is_checkmate():
             if board.outcome().winner == chess.WHITE:
                 return 9999999
