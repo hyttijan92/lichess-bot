@@ -324,7 +324,7 @@ class IterativeDeepening(ExampleEngine):
         for square in chess.SQUARES:
             piece = board.piece_at(square)
             if piece is not None:
-                game_phase += game_phase_inc[piece.piece_type]
+                game_phase += game_phase_inc[piece.piece_type-1]
                 if piece.color == chess.WHITE:
                     middle_game_white_score += MID_GAME_CHESS_PIECE_VALUES[piece.piece_type]
                     end_game_white_score += END_GAME_CHESS_PIECE_VALUES[piece.piece_type]
