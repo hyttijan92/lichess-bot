@@ -308,7 +308,7 @@ class IterativeDeepening(ExampleEngine):
 
     def heuristic(self, board: chess.Board) -> int:
         game_phase = 0
-        game_phase_inc = [0, 0, 1, 1, 1, 1, 2, 2, 4, 4, 0, 0]
+        game_phase_inc = [0, 1, 1, 2, 4, 0]
         middle_game_white_score = 0
         end_game_white_score = 0
         middle_game_black_score = 0
