@@ -233,7 +233,7 @@ class IterativeDeepening(ExampleEngine):
         if board.turn == chess.WHITE:
             max_value = -99999999
             max_move = None
-            legal_moves.sort(reverse=False, key=sort_initial_moves_partial)
+            legal_moves.sort(reverse=True, key=sort_initial_moves_partial)
             if self.move is not None:
                 legal_moves.remove(self.move.move)
                 legal_moves.insert(0, self.move.move)
